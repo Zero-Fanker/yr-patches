@@ -33,4 +33,4 @@ jobs:
     - name: do build
       run: |
         $env:PATH=""
-        cmd /c build_dll.cmd
+        C:\Windows\System32\cmd.exe /c build_dll.cmd
