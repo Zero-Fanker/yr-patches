@@ -1,9 +1,7 @@
 name: Build
 on:
   push:
-    branches:
-      - *
-      - !master
+    branches: ['*', '!master']
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,20 +19,18 @@ jobs:
         submodules: recursive
 
     - name: download SDK
-      shell: bash
+      shell: powershell
       run: |
         curl https://github.com/revengenowstudio/win-builds-for-patching/raw/master/win-builds-for-patching.zip -o win-builds-for-cnc-patch.zip
-
-    - name: unpack zip
-      uses: action-zip@v1
-      with:
-        args: unzip -qq win-builds-for-cnc-patch.zip -d win-builds-for-cnc-patch
+        Expand-Archive -Path 'win-builds-for-cnc-patch.zip' -DestinationPath 'win-builds-for-cnc-patch'
 
     - name: install sdk
       run: |
-        cd win-builds-for-cnc-patch
-        ./win-install.bat
+        cd win-builds-for-cnc-patch/win-builds-for-patching
+        ls
+        cmd /c win-install.bat
 
     - name: do build
       run: |
-        ./build_dll.bat
+        $env:PATH=""
+        cmd /c build_dll.cmd
